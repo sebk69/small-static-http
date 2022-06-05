@@ -2,7 +2,7 @@ FROM php:8.1-cli
 
 # args
 ARG memory_limit=500M
-ARG timezone
+ARG timezone=Europe/Paris
 ARG user_id=1000
 
 # install openswoole
