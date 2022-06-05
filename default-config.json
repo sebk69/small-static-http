@@ -1,0 +1,11 @@
+{
+  "root-path": "/var/www",
+  "skip-hidden-files": true,
+  "http": {
+    "port": 80,
+    "swoole": {
+      "worker_num": 8,
+      "backlog": 128
+    }
+  }
+}

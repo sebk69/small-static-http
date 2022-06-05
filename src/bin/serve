@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+/*
+ * This file is a part of small-static-http
+ * Copyright 2022 - Sébastien Kus
+ * Under GNU GPL V3 licence
+ */
+
+use SmallStaticHttp\File\FileLoaderInterface;
+use SmallStaticHttp\Kernel\Log;
+use SmallStaticHttp\Kernel\Kernel;
+use SmallStaticHttp\Server\Server;
+
+// Start Kernel
+include_once __DIR__ . '/../Kernel/Kernel.php';
+(new Kernel())->start();
+
+// Load files
+Log::info("Load files for serving");
+Kernel::$container->get(FileLoaderInterface::class)
+    ->setPublicPath(Kernel::$container->getParameter('root-path'))
+    ->load();
+Log::info("Files loaded !");
+
+Kernel::$container->get(Server::class)->serve();
