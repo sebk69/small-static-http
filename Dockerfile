@@ -38,5 +38,8 @@ RUN usermod -u $user_id www-data
 RUN chown www-data:www-data /var/www
 USER www-data
 
+# copy sources files
+COPY ./src /usr/src/app
+
 # entrypoint
 ENTRYPOINT /usr/src/app/bin/serve
