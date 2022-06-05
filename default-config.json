@@ -1,5 +1,6 @@
 {
   "root-path": "/var/www",
+  "index-files": ["index.html"],
   "skip-hidden-files": true,
   "http": {
     "port": 80,

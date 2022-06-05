@@ -48,11 +48,12 @@ class FilesLoader implements FileLoaderInterface
      * List files by uri
      * @param string $uri
      * @return File
+     * @throws FileNotFoundException
      */
     public function getFileByUri(string $uri): File
     {
         if (!array_key_exists($uri, $this->files)) {
-            throw new \Exception('File not found');
+            throw new FileNotFoundException('File not found');
         }
 
         return $this->files[$uri];
