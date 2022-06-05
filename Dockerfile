@@ -41,5 +41,8 @@ USER www-data
 # copy sources files
 COPY ./src /usr/src/app
 
+# expose http port
+EXPOSE 80
+
 # entrypoint
 ENTRYPOINT /usr/src/app/bin/serve
