@@ -11,6 +11,7 @@ namespace SmallStaticHttp\Server;
 
 use SmallStaticHttp\File\FileLoaderInterface;
 use SmallStaticHttp\File\FileNotFoundException;
+use SmallStaticHttp\File\Mime;
 use SmallStaticHttp\Kernel\Kernel;
 use SmallStaticHttp\Kernel\Log;
 
@@ -27,6 +28,11 @@ class Server
 
         // Handle request
         $this->swooleServer->on('Request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) {
+            $gzip = false;
+            if (isset($request->header["accept-encoding"]) && strstr($request->header["accept-encoding"], 'gzip')) {
+                $gzip = true;
+            }
+
             $index = 0;
             $indexNames = Kernel::$container->getParameter('index-files');
             $indexFile = "";
@@ -35,7 +41,16 @@ class Server
                 try {
                     $file = $this->fileLoader->getFileByUri($request->server['request_uri'] . $indexFile);
 
-                    $response->end($file->getContent());
+                    if ($gzip) {
+                        $response->header['content-encoding'] = 'gzip';
+                    }
+
+                    $response->header['content-type'] = $file->getMime();
+
+                    var_dump($file->getContentGzipped());
+
+                    $response->write($gzip ? $file->getContentGzipped() : $file->getContent());
+                    $response->end();
                     Log::info('Serving ' . $request->server['request_uri']);
                     $found = true;
                 } catch (FileNotFoundException $e) {

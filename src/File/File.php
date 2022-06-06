@@ -16,9 +16,9 @@ class File implements FileInterface
 
     public function __construct(protected string $filename) {
         $ext = $this->getExtension();
-        $this->mime = Mime::TYPES[$ext];
+        $this->mime = array_key_exists($ext, Mime::TYPES) ? Mime::TYPES[$ext] : 'application/octet-stream';
         $this->content = file_get_contents($this->filename);
-        $this->contentGzipped = gzcompress($this->content, 9);
+        $this->contentGzipped = gzencode($this->content, 9, FORCE_GZIP);
     }
 
     /**
@@ -27,11 +27,10 @@ class File implements FileInterface
      */
     public function getExtension(): string
     {
-        ;
-        for($i = strlen($this->filename); $i != '.' && $i > 0; $i--);
+        for($i = strlen($this->filename); substr($this->filename, $i, 1) != '.' && $i > 0; $i--);
 
         if ($i > 0) {
-            return substr($this->filename, $i);
+            return substr($this->filename, $i + 1);
         }
 
         return '';
