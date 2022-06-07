@@ -47,8 +47,6 @@ class Server
 
                     $response->header['content-type'] = $file->getMime();
 
-                    var_dump($file->getContentGzipped());
-
                     $response->write($gzip ? $file->getContentGzipped() : $file->getContent());
                     $response->end();
                     Log::info('Serving ' . $request->server['request_uri']);
@@ -61,8 +59,25 @@ class Server
 
             if (!$found) {
                 Log::error('Can\'t serve ' . $request->server['request_uri'] . ' : file not found');
-                $response->status = 404;
-                $response->end('Not found !');
+
+                try {
+                    $file = $this->fileLoader->getFileByUri(Kernel::$container->getParameter('not-found.page'));
+
+                    if ($gzip) {
+                        $response->header['content-encoding'] = 'gzip';
+                    }
+
+                    $response->header['content-type'] = $file->getMime();
+
+                    $response->write($gzip ? $file->getContentGzipped() : $file->getContent());
+                    $response->status = Kernel::$container->getParameter('not-found.status');
+                    $response->end();
+
+                    Log::info('Serving ' . $request->server['request_uri']);
+                } catch (FileNotFoundException $e) {
+                    $response->status = 404;
+                    $response->end('Not found !');
+                }
             }
         });
     }
