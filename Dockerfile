@@ -41,6 +41,9 @@ USER www-data
 # copy sources files
 COPY ./src /usr/src/app
 
+# install dependencies
+RUN composer update
+
 # expose http port
 EXPOSE 80
 
