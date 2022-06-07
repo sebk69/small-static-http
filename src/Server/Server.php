@@ -70,12 +70,12 @@ class Server
                     $response->header['content-type'] = $file->getMime();
 
                     $response->write($gzip ? $file->getContentGzipped() : $file->getContent());
-                    $response->status = Kernel::$container->getParameter('not-found.status');
+                    $response->status(Kernel::$container->getParameter('not-found.status'));
                     $response->end();
 
                     Log::info('Serving ' . $request->server['request_uri']);
                 } catch (FileNotFoundException $e) {
-                    $response->status = 404;
+                    $response->status(404);
                     $response->end('Not found !');
                 }
             }
