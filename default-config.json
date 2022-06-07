@@ -1,6 +1,10 @@
 {
   "root-path": "/var/www",
   "index-files": ["index.html"],
+  "not-found": {
+    "page": "/not-found.html",
+    "status": 404
+  },
   "skip-hidden-files": true,
   "http": {
     "port": 80,
