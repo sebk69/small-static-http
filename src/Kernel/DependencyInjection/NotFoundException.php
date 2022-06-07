@@ -1,6 +1,6 @@
 <?php
 
-namespace SmallStaticHttp\DependencyInjection;
+namespace SmallStaticHttp\Kernel\DependencyInjection;
 
 use Psr\Container\NotFoundExceptionInterface;
 
