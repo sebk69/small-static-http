@@ -42,10 +42,10 @@ class Server
                     $file = $this->fileLoader->getFileByUri($request->server['request_uri'] . $indexFile);
 
                     if ($gzip) {
-                        $response->header['content-encoding'] = 'gzip';
+                        $response->header('content-encoding', 'gzip');
                     }
 
-                    $response->header['content-type'] = $file->getMime();
+                    $response->header('content-type', $file->getMime());
 
                     $response->write($gzip ? $file->getContentGzipped() : $file->getContent());
                     $response->end();
@@ -64,10 +64,10 @@ class Server
                     $file = $this->fileLoader->getFileByUri(Kernel::$container->getParameter('not-found.page'));
 
                     if ($gzip) {
-                        $response->header['content-encoding'] = 'gzip';
+                        $response->header('content-encoding', 'gzip');
                     }
 
-                    $response->header['content-type'] = $file->getMime();
+                    $response->header('content-type', $file->getMime());
 
                     $response->write($gzip ? $file->getContentGzipped() : $file->getContent());
                     $response->status(Kernel::$container->getParameter('not-found.status'));
