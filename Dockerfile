@@ -33,12 +33,6 @@ RUN php -r "unlink('composer-setup.php');"
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 
-# setup rights
-RUN apt-get remove iptables
-RUN usermod -u $user_id www-data
-RUN chown www-data:www-data /var/www
-USER www-data
-
 # copy sources files
 COPY ./src /usr/src/app
 
